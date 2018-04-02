@@ -9,7 +9,7 @@ contract ZombieFactory is Ownable {
     using SafeMath32 for uint32;
     using SafeMath16 for uint16;
 
-    event NewZombie(uint zombieId, string name, uint dna);
+    event NewZombie(uint zombieId, string name, uint dna, uint32 level, uint32 readyTime, uint16 winCount, uint16 lossCount);
 
     uint dnaDigits = 16;
     uint dnaModulus = 10 ** dnaDigits;
@@ -30,10 +30,14 @@ contract ZombieFactory is Ownable {
     mapping (address => uint) public ownerZombieCount;
 
     function _createZombie(string _name, uint _dna) internal {
-        uint zombieId = zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0)) - 1;
+        uint32 level = 1;
+        uint16 winCount = 0;
+        uint16 lossCount = 0;
+        uint32 readyTime = uint32(now + cooldownTime);
+        uint zombieId = zombies.push(Zombie(_name, _dna, 1, readyTime, winCount, lossCount)) - 1;
         zombieToOwner[zombieId] = msg.sender;
         ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
-        emit NewZombie(zombieId, _name, _dna);
+        emit NewZombie(zombieId, _name, _dna, level, readyTime, winCount, lossCount);
     }
 
     function _generateRandomDna(string _str) private view returns (uint) {

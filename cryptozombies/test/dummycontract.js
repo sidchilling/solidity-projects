@@ -125,3 +125,17 @@ contract('EventsDummyLib', () => {
     });
 
 });
+
+contract('Access Variable', () => {
+
+    it('access the contract public variable', () => {
+        return DummyContract.deployed()
+        .then(instance => {
+            return instance.data()
+            .then(data => {
+                assert.equal(data, 10, 'Data must be 10');
+            });
+        });
+    });
+
+});
