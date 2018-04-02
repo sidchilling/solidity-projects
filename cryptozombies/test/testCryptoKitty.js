@@ -46,6 +46,7 @@ contract('CryptoKitty', () => {
         })
         .then(() => {
             console.log('Contract Address: ' + kittyInstance.address);
+            console.log('typeof address: ' + typeof kittyInstance.address);
         });
     });
 
